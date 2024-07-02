@@ -3,11 +3,60 @@ import BookModel from "../../models/BookModel";
 import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { StarsReview } from '../Utils/StarsReview';
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
+import { LatestReviews } from "./LatestReviews";
 
 export const BookCheckoutPage = () => {
   const [book, setBook] = useState<BookModel>();
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState(null);
+
+  // TODO:: get review of the Book
+  const [reviews, setReviews] = useState<ReviewModel[]>([]);
+  const [totalStars, setTotalStars] = useState(0);
+  const [isLoadingReview, setIsLoadingReview] = useState(true);
+
+
+  useEffect(()=>{
+    const fetchReviewBooks = async () => {
+        const reviewUrl = `http://localhost:8000/api/reviews/search/findByBookId?bookId=${bookId}`;
+        
+        const responseReview = await fetch(reviewUrl);
+
+        if(!responseReview.ok){
+            throw new Error('Some thing went worong!');
+        }
+
+        const responseJsonReview = await responseReview.json();
+        const resposeData = responseJsonReview._embedded.reviews;
+
+        const loadedReviews: ReviewModel[] = [];
+
+        let wightedStarReviews: number = 0;
+
+        for(let key in resposeData){
+            loadedReviews.push({
+                id: resposeData[key].id,
+                userEmail: resposeData[key].userEmail,
+                date: resposeData[key].date,
+                rating: resposeData[key].rating,
+                book_id: resposeData[key].bookId,
+                reviewDescription: resposeData[key].reviewDescription,
+
+            });
+            wightedStarReviews = wightedStarReviews + resposeData[key].rating;
+        }
+        if(loadedReviews){
+            const round = (Math.round((wightedStarReviews / loadedReviews.length) * 2) / 2).toFixed(1);
+            setTotalStars(Number(round));
+        }
+        setReviews(loadedReviews);
+        setIsLoadingReview(false);
+    }
+    fetchReviewBooks().catch((error: any)=> {
+        setIsLoadingReview(false);
+        setHttpError(error.message);
+    })
+  }, []);
 
   // TODO:: get the Book ID from URL
   const bookId = window.location.pathname.split("/")[2];
@@ -45,7 +94,7 @@ export const BookCheckoutPage = () => {
   }, []);
 
   // some instructions
-  if (isLoading) {
+  if (isLoading || isLoadingReview) {
     return <SpinnerLoading />;
   }
   if (httpError) {
@@ -83,6 +132,7 @@ export const BookCheckoutPage = () => {
           <CheckoutAndReviewBox book={book} mobile={false}/>
         </div>
         <hr />
+        <LatestReviews bookId={book?.id} reviews={reviews} mobile={false} key={book?.id}/>
       </div>
       <div className="container d-lg-none mt-5">
         <div className="d-flex justify-content-center align-items-center">
@@ -107,6 +157,7 @@ export const BookCheckoutPage = () => {
         </div>
         <CheckoutAndReviewBox book={book} mobile={true}/>
         <hr />
+        <LatestReviews bookId={book?.id} reviews={reviews} mobile={true} key={book?.id}/>
       </div>
     </div>
   );
