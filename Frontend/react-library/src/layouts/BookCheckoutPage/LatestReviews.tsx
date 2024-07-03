@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Review } from "../Utils/Review";
+import ReviewModel from "../../models/ReviewModel";
 
 export const LatestReviews: React.FC<{reviews: ReviewModel[], bookId: number | undefined, mobile: boolean}> = (props) => {
     

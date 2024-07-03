@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import OktaSigninWidget from "./OktaSigninWidget";
 
 const LoginWidget = ({ config }) => {
-    const [oktaAuth, authState] = useOktaAuth();
+    const {oktaAuth, authState} = useOktaAuth();
     const onSuccess = (tokens) => {
         oktaAuth.handleLoginRedirect(tokens);
     };
@@ -13,14 +13,14 @@ const LoginWidget = ({ config }) => {
     };
 
     if (!authState) {
-        return <SpinnerLoading />;
+        return <SpinnerLoading />
     }
 
-    return authState.isAuthenticated ? (
-        <Redirect to={{ pathname: "/" }} />
-    ) : (
-        <OktaSigninWidget onError={onError} onSuccess={onSuccess} config={config}/>
-    );
-};
+    return authState.isAuthenticated ? 
+         <Redirect to={{ pathname: "/" }} />
+     : 
+        <OktaSigninWidget config={config} onError={onError} onSuccess={onSuccess}/>
+};   
+
 
 export default LoginWidget;

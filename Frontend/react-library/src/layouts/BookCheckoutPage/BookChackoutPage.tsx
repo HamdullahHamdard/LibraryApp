@@ -4,6 +4,7 @@ import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { StarsReview } from '../Utils/StarsReview';
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 import { LatestReviews } from "./LatestReviews";
+import ReviewModel from "../../models/ReviewModel";
 
 export const BookCheckoutPage = () => {
   const [book, setBook] = useState<BookModel>();

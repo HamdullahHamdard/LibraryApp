@@ -1,4 +1,4 @@
-export class ReviewModel{
+class ReviewModel{
     id: number;
     userEmail: string;
     date: string;
@@ -22,3 +22,5 @@ export class ReviewModel{
         this.reviewDescription =reviewDescription;
     }
 }
+
+export default ReviewModel;
