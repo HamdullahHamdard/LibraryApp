@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.library.libraryapp.entity.Book;
 import com.library.libraryapp.service.BookService;
+import com.library.libraryapp.utils.ExtractJWT;
 
 @CrossOrigin("http://localhost:8000")
 @RestController
@@ -27,20 +28,21 @@ public class BookController {
 
     @GetMapping("/secure/currentloans/count")
     public int currentLoansCount(@RequestHeader(value = "Authorization") String token) {
-        String userEmail = "testuser@gmail.com";
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.currentLoansCount(userEmail);
     }
 
     @GetMapping("/secure/ischeckedout/byuser")
     public boolean checkoutBookByUser(@RequestHeader(value = "Authorization") String token,
             @RequestParam Long bookId) {
-        String userEmail = "testuser@gmail.com";
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
 
     @PutMapping("/secure/checkout")
-    public Book checkoutBook(@RequestParam Long bookId) throws Exception {
-        String userEmail = "testuser@gmail.com";
+    public Book checkoutBook(@RequestHeader(value = "Authorization") String token, @RequestParam Long bookId)
+            throws Exception {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
 
         return bookService.checkoutBook(userEmail, bookId);
     }

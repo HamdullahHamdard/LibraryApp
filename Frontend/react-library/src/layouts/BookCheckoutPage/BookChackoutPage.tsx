@@ -5,8 +5,11 @@ import { StarsReview } from '../Utils/StarsReview';
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 import { LatestReviews } from "./LatestReviews";
 import ReviewModel from "../../models/ReviewModel";
+import { useOktaAuth } from "@okta/okta-react";
 
 export const BookCheckoutPage = () => {
+
+  const {authState} = useOktaAuth();
   const [book, setBook] = useState<BookModel>();
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState(null);
@@ -15,6 +18,10 @@ export const BookCheckoutPage = () => {
   const [reviews, setReviews] = useState<ReviewModel[]>([]);
   const [totalStars, setTotalStars] = useState(0);
   const [isLoadingReview, setIsLoadingReview] = useState(true);
+
+  // TODO:: Loan State
+  const [currentLoanState, setCurrentLoanState] = useState(0);
+  const [isLoadingCurrentLoanState, setIsLoadingCurrentLoanState] = useState(true);
 
 
   useEffect(()=>{
@@ -94,6 +101,17 @@ export const BookCheckoutPage = () => {
     });
   }, []);
 
+
+  // Loan
+  useEffect(() => {
+    const fetchUserCurrentLoanState = async () => {
+
+    }
+    fetchUserCurrentLoanState().catch((error: any)=> {
+      setIsLoadingCurrentLoanState(false);
+      setHttpError(error.message);
+    })
+  },[authState]);
   // some instructions
   if (isLoading || isLoadingReview) {
     return <SpinnerLoading />;
