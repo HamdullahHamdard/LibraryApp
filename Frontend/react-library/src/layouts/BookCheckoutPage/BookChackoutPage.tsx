@@ -6,6 +6,7 @@ import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 import { LatestReviews } from "./LatestReviews";
 import ReviewModel from "../../models/ReviewModel";
 import { useOktaAuth } from "@okta/okta-react";
+import { baseUrl, bookSecureUrl } from "../Utils/const";
 
 export const BookCheckoutPage = () => {
 
@@ -20,7 +21,7 @@ export const BookCheckoutPage = () => {
   const [isLoadingReview, setIsLoadingReview] = useState(true);
 
   // TODO:: Loan State
-  const [currentLoanState, setCurrentLoanState] = useState(0);
+  const [currentLoanCount, setCurrentLoanState] = useState(0);
   const [isLoadingCurrentLoanState, setIsLoadingCurrentLoanState] = useState(true);
 
 
@@ -105,7 +106,23 @@ export const BookCheckoutPage = () => {
   // Loan
   useEffect(() => {
     const fetchUserCurrentLoanState = async () => {
-
+      if(authState && authState.isAuthenticated){
+        const url = `${bookSecureUrl}/currentloans/count`;
+        const requestOptions = {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        }
+        const currentLoansCountResponse = await fetch(url, requestOptions);
+        if(!currentLoansCountResponse.ok){
+          throw new Error('Some thing went wrong!');
+        }
+        const currentLoansCountResponseJson = await currentLoansCountResponse.json();
+        setCurrentLoanState(currentLoansCountResponseJson);
+      }
+      setIsLoadingCurrentLoanState(false);
     }
     fetchUserCurrentLoanState().catch((error: any)=> {
       setIsLoadingCurrentLoanState(false);
@@ -113,7 +130,7 @@ export const BookCheckoutPage = () => {
     })
   },[authState]);
   // some instructions
-  if (isLoading || isLoadingReview) {
+  if (isLoading || isLoadingReview || isLoadingCurrentLoanState) {
     return <SpinnerLoading />;
   }
   if (httpError) {
@@ -148,7 +165,7 @@ export const BookCheckoutPage = () => {
               <StarsReview rating={3.5} size={32}/>
             </div>
           </div>
-          <CheckoutAndReviewBox book={book} mobile={false}/>
+          <CheckoutAndReviewBox book={book} currentLoansCount={currentLoanCount} mobile={false}/>
         </div>
         <hr />
         <LatestReviews bookId={book?.id} reviews={reviews} mobile={false} key={book?.id}/>
@@ -174,7 +191,7 @@ export const BookCheckoutPage = () => {
             <StarsReview rating={3.5} size={32}/>
           </div>
         </div>
-        <CheckoutAndReviewBox book={book} mobile={true}/>
+        <CheckoutAndReviewBox book={book} currentLoansCount={currentLoanCount} mobile={true}/>
         <hr />
         <LatestReviews bookId={book?.id} reviews={reviews} mobile={true} key={book?.id}/>
       </div>
