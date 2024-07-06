@@ -13,7 +13,7 @@ import com.library.libraryapp.entity.Book;
 import com.library.libraryapp.service.BookService;
 import com.library.libraryapp.utils.ExtractJWT;
 
-@CrossOrigin("http://localhost:8000")
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/books")
 
