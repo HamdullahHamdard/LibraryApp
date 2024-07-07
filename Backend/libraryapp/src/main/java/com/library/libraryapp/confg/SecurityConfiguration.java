@@ -19,8 +19,9 @@ public class SecurityConfiguration {
         http.setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy());
         // Okta.configureResourceServer401ResponseBody(http);
         return http
-                .authorizeHttpRequests((req) -> req.requestMatchers("/api/books/secure/**").authenticated()
-                        .requestMatchers("/**").permitAll())
+                .authorizeHttpRequests(
+                        (req) -> req.requestMatchers("/api/books/secure/**", "/api/reviewss/secure/**").authenticated()
+                                .requestMatchers("/**").permitAll())
                 .oauth2ResourceServer((srv) -> srv.jwt(Customizer.withDefaults()))
                 .cors(Customizer.withDefaults())
                 .build();
