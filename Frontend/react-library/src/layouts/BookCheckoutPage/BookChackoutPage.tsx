@@ -240,20 +240,28 @@ export const BookCheckoutPage = () => {
     }
     const reviewRequestModel = new ReviewRequestModel(starInput, bookIdNumber, reviewDescription);
 
-    const url = `http://localhost:8000/api/reviews/secure`;
+    const url = 'http://localhost:8000/api/reviews/secure';
     const requestOptions = {
-      mrthod: 'POST',
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(reviewRequestModel)
     }
+    console.log("before Fetching***********************************************");
     const returnResponse = await fetch(url, requestOptions);
+
+    console.log(JSON.stringify(reviewRequestModel));
+
+    console.log("After Fetching***********************************************");
+    console.log(bookIdNumber);
     if(!returnResponse.ok){
       throw new Error('Some thing worong with post rating');
     }
     setIsReviewLeft(true);
+    
+    console.log("After Fetch       ---***********************************************");
 
 
 

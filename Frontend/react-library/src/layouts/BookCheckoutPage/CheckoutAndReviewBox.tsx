@@ -10,36 +10,56 @@ export const CheckoutAndReviewBox: React.FC<{
   isCheckOut: boolean;
   checkoutBook: any;
   isReviewLeft: boolean;
-  submitReview: any
+  submitReview: any;
 }> = (props) => {
-
-    function buttonRender (){
-        if(props.isAuthenticated){
-            if(!props.isCheckOut && props.currentLoansCount < 5){
-                return (<button onClick={() => props.checkoutBook()} className="btn btn-success btn-lg">Checkout</button>)
-            }
-            else if(props.isCheckOut){
-                return (<p><b>Book checked out. Enjoy!</b></p>)
-            }else if(!props.isCheckOut){
-                return (<p className="text-danger">Too many books checkout.</p>)
-            }
-        }
-        return (<Link to='/login' className="btn btn-success btn-lg">Sign in</Link>)
-    }
-
-    function reviewRender(){
-      if(props.isAuthenticated && !props.isReviewLeft){
-        return (<p><LeaveAReview submitReview={props.submitReview}/></p>)
-      }else if(props.isAuthenticated && props.isReviewLeft){
-        return (<p><b>Thank you for your review</b></p>)
+  function buttonRender() {
+    if (props.isAuthenticated) {
+      if (!props.isCheckOut && props.currentLoansCount < 5) {
+        return (
+          <button
+            onClick={() => props.checkoutBook()}
+            className="btn btn-success btn-lg"
+          >
+            Checkout
+          </button>
+        );
+      } else if (props.isCheckOut) {
+        return (
+          <p>
+            <b>Book checked out. Enjoy!</b>
+          </p>
+        );
+      } else if (!props.isCheckOut) {
+        return <p className="text-danger">Too many books checkout.</p>;
       }
-      return (
-        <div>
-          <hr/>
-          <p>Sign in to be able to leave a review</p>
-        </div>
-      )
     }
+    return (
+      <Link to="/login" className="btn btn-success btn-lg">
+        Sign in
+      </Link>
+    );
+  }
+
+  function reviewRender() {
+    if (props.isAuthenticated && !props.isReviewLeft) {
+      return (
+          <LeaveAReview submitReview={props.submitReview} />
+        
+      );
+    } else if (props.isAuthenticated && props.isReviewLeft) {
+      return (
+        <p>
+          <b>Thank you for your review</b>
+        </p>
+      );
+    }
+    return (
+      <div>
+        <hr />
+        <p>Sign in to be able to leave a review</p>
+      </div>
+    );
+  }
 
   return (
     <div

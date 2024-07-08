@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { StarsReview } from "./StarsReview";
 
-export const LeaveAReview: React.FC<{submitReview: any}> = (props) => {
+export const LeaveAReview: React.FC<{ submitReview: any }> = (props) => {
   const [starInput, setStarInput] = useState(0);
   const [displayInput, setDisplayInput] = useState(false);
-  const [reviewDescription, setReviewDescription] = useState('');
+  const [reviewDescription, setReviewDescription] = useState("");
 
   function starValue(value: number) {
     setStarInput(value);
@@ -15,7 +15,7 @@ export const LeaveAReview: React.FC<{submitReview: any}> = (props) => {
     <div className="dropdown" style={{ cursor: "pointer" }}>
       <h5
         className="dropdown-toggle"
-        id=" "
+        id="dropdwonMenuButton1"
         data-bs-toggle="dropdown"
       >
         Leave a review?
@@ -83,21 +83,30 @@ export const LeaveAReview: React.FC<{submitReview: any}> = (props) => {
       </ul>
       <StarsReview rating={starInput} size={32} />
 
-      {displayInput &&
+      {displayInput && (
         <form method="POST" action="#">
-            <hr/>
-            <div className="mb-3">
-                <label className="form-label">Description</label>
-                <textarea className="form-control" id="submitReviewDescription" placeholder="Optional" rows={3}
-                 onChange={e => setReviewDescription(e.target.value)}>
-
-                 </textarea>
-            </div>
-            <div>
-                <button type="button" onClick={()=> props.submitReview(starInput, reviewDescription)} className="btn btn-primary mt-3">Submit Review</button>
-            </div>
+          <hr />
+          <div className="mb-3">
+            <label className="form-label">Description</label>
+            <textarea
+              className="form-control"
+              id="submitReviewDescription"
+              placeholder="Optional"
+              rows={3}
+              onChange={(e) => setReviewDescription(e.target.value)}
+            ></textarea>
+          </div>
+          <div>
+            <button
+              type="button"
+              onClick={() => props.submitReview(starInput, reviewDescription)}
+              className="btn btn-primary mt-3"
+            >
+              Submit Review
+            </button>
+          </div>
         </form>
-      }
+      )}
     </div>
   );
 };
