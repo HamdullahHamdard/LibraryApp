@@ -17,7 +17,7 @@ export const LatestReviews: React.FC<{reviews: ReviewModel[], bookId: number | u
                             <Review review={eachReview} key={eachReview.id}></Review>
                         ))}
                         <div className="m-3">
-                            <Link to='#' className="btn main-color btn-md text-white">
+                            <Link to={`/reviewlist/${props.bookId}`} className="btn main-color btn-md text-white">
                                 Reach all reviews.
                             </Link>
                         </div>
@@ -25,7 +25,6 @@ export const LatestReviews: React.FC<{reviews: ReviewModel[], bookId: number | u
                 : <div className="m-3">
                     <p className="lead">Currently  there are no reviews for this book</p>
                 </div>
-                
                 }
             </div>
         </div>
