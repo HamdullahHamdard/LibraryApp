@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import ShelfCurrentLoans from '../../../models/ShelfCurrentLoans';
 import { SpinnerLoading } from "../../Utils/SpinnerLoading";
 import { Link } from "react-router-dom";
-import { Review } from '../../Utils/Review';
 import { LoansModal } from "./LoansModel";
 
 export const Loans = () => {
 
     const {authState} = useOktaAuth();
     const [httpError, setHttpError] = useState(null);
+    const [checkout, setCheckout]= useState(false);
 
     // User current loans
     const [ shelfCurrentLoans, setShelfCurrentLoans] = useState<ShelfCurrentLoans[]>([]);
@@ -24,7 +24,7 @@ export const Loans = () => {
                     headers: {
                         Authorization: `Bearer ${authState.accessToken?.accessToken}`,
                         "Content-Type": "application/json",
-                      },
+                    },
 
                 };
                 const shelfCurrentLoansResponse = await fetch(url, requestOptions);
@@ -41,7 +41,7 @@ export const Loans = () => {
             setHttpError(error.message);
         })
         window.scrollTo(0,0);
-    },[authState]);
+    },[authState, checkout]);
 
 
     if(isLoadingCurrentLoans){
@@ -55,6 +55,24 @@ export const Loans = () => {
                 {httpError}
             </p>
         </div>
+    }
+
+    async function returnBook(bookId: number){
+        const url = `http://localhost:8000/api/books/secure/return/?bookId=${bookId}`;
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                "Content-Type": "application/json",
+              },
+        };
+        const returnResponse = await fetch (url, requestOptions);
+
+        if(!returnResponse.ok){
+            throw new Error('Some thing went wrong on return book');
+        }
+        setCheckout(!checkout);
+
     }
 
 
@@ -118,7 +136,7 @@ export const Loans = () => {
                                 </div>
                             </div>
                             <hr/>
-                            <LoansModal mobile={false} shelfCurrentLoan={shelfCurrentLoan} />
+                            <LoansModal returnBook={returnBook} mobile={false} shelfCurrentLoan={shelfCurrentLoan} />
                         </div>
                     ))}
                 </> :
@@ -188,9 +206,8 @@ export const Loans = () => {
                                         </Link>
                                     </div>
                                 </div>
-                            
                             <hr/>
-                            <LoansModal mobile={true} shelfCurrentLoan={shelfCurrentLoan} />
+                            <LoansModal returnBook={returnBook} mobile={true} shelfCurrentLoan={shelfCurrentLoan} />
                         </div>
                     ))}
                 </> :
