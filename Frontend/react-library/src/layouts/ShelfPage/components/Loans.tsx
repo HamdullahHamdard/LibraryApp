@@ -58,7 +58,8 @@ export const Loans = () => {
     }
 
     async function returnBook(bookId: number){
-        const url = `http://localhost:8000/api/books/secure/return/?bookId=${bookId}`;
+    //    const _url = `http://localhost:8000/api/books/secure/return?bookId=1`;
+        const url = `http://localhost:8000/api/books/secure/return?bookId=${bookId}`;
         const requestOptions = {
             method: 'PUT',
             headers: {
