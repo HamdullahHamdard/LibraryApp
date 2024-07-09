@@ -1,5 +1,7 @@
 package com.library.libraryapp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.library.libraryapp.entity.Book;
+import com.library.libraryapp.responsemodels.ShelfCurrentLoansResponse;
 import com.library.libraryapp.service.BookService;
 import com.library.libraryapp.utils.ExtractJWT;
 
@@ -24,6 +27,13 @@ public class BookController {
     @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    @GetMapping("/secure/currentloans")
+    public List<ShelfCurrentLoansResponse> currentLoans(@RequestHeader(value = "Authorization") String token)
+            throws Exception {
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
+        return bookService.currentLoans(userEmail);
     }
 
     @GetMapping("/secure/currentloans/count")
