@@ -93,7 +93,7 @@ export const HistoryPage = () => {
                                             <p className="card-text">{history.description}</p>
                                             <hr />
                                             <p className="card-text">Checked out on: {history.checkoutDate}</p>
-                                            <p className="card-text">Returned on: {history.returnedData}</p>
+                                            <p className="card-text">Returned on: {history.returnedDate}</p>
                                         </div>
                                     </div>
                                 </div>

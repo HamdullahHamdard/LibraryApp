@@ -1,7 +1,7 @@
 class HistoryModel{
     id: number;
     checkoutDate: string;
-    returnedData: string;
+    returnedDate: string;
     title: string;
     author: string;
     description: string;
@@ -10,7 +10,7 @@ class HistoryModel{
     constructor(id: number, checkoutDate: string, returnedDate: string, title: string, author: string, description:string, img: string){
         this.id = id;
         this.checkoutDate = checkoutDate;
-        this.returnedData = returnedDate;
+        this.returnedDate = returnedDate;
         this.title = title;
         this.author = author;
         this.description = description;
