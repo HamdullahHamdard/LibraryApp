@@ -57,24 +57,43 @@ export const Loans = () => {
         </div>
     }
 
-    async function returnBook(bookId: number){
+    async function renewLoan(bookId: number){
     //    const _url = `http://localhost:8000/api/books/secure/return?bookId=1`;
-        const url = `http://localhost:8000/api/books/secure/return?bookId=${bookId}`;
+        const url = `http://localhost:8000/api/books/secure/renew/loan?bookId=${bookId}`;
         const requestOptions = {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
                 "Content-Type": "application/json",
-              },
+            },
         };
         const returnResponse = await fetch (url, requestOptions);
 
         if(!returnResponse.ok){
-            throw new Error('Some thing went wrong on return book');
+            throw new Error('Some thing went wrong on renew loan book');
         }
         setCheckout(!checkout);
 
     }
+
+    async function returnBook(bookId: number){
+        //    const _url = `http://localhost:8000/api/books/secure/return?bookId=1`;
+            const url = `http://localhost:8000/api/books/secure/return?bookId=${bookId}`;
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                    "Content-Type": "application/json",
+                  },
+            };
+            const returnResponse = await fetch (url, requestOptions);
+    
+            if(!returnResponse.ok){
+                throw new Error('Some thing went wrong on return book');
+            }
+            setCheckout(!checkout);
+    
+        }
 
 
     return (
@@ -137,7 +156,7 @@ export const Loans = () => {
                                 </div>
                             </div>
                             <hr/>
-                            <LoansModal returnBook={returnBook} mobile={false} shelfCurrentLoan={shelfCurrentLoan} />
+                            <LoansModal renewLoan={renewLoan} returnBook={returnBook} mobile={false} shelfCurrentLoan={shelfCurrentLoan} />
                         </div>
                     ))}
                 </> :
@@ -208,7 +227,7 @@ export const Loans = () => {
                                     </div>
                                 </div>
                             <hr/>
-                            <LoansModal returnBook={returnBook} mobile={true} shelfCurrentLoan={shelfCurrentLoan} />
+                            <LoansModal renewLoan={renewLoan} returnBook={returnBook} mobile={true} shelfCurrentLoan={shelfCurrentLoan} />
                         </div>
                     ))}
                 </> :
