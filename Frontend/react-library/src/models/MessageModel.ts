@@ -12,3 +12,5 @@ class MessageModel{
         this.question = question;
     }
 }
+
+export default MessageModel;
