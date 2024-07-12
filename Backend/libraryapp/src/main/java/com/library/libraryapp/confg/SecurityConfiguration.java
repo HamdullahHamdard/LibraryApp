@@ -20,7 +20,10 @@ public class SecurityConfiguration {
         // Okta.configureResourceServer401ResponseBody(http);
         return http
                 .authorizeHttpRequests(
-                        (req) -> req.requestMatchers("/api/books/secure/**", "/api/reviews/secure/**").authenticated()
+                        (req) -> req
+                                .requestMatchers("/api/books/secure/**", "/api/reviews/secure/**",
+                                        "api/messages/secure/**")
+                                .authenticated()
                                 .requestMatchers("/**").permitAll())
                 .oauth2ResourceServer((srv) -> srv.jwt(Customizer.withDefaults()))
                 .cors(Customizer.withDefaults())
