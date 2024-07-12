@@ -17,7 +17,7 @@ export const HistoryPage = () => {
     const [ currentPage, setCurrentPage ] = useState(1);
     const [ totalPages, setTotalPages ] = useState(0);
 
-    useEffect(()=> {
+    useEffect(() => {
         const fetchUserHistory = async () => {
             if(authState && authState.isAuthenticated){
                 const url = `http://localhost:8000/api/histories/search/findBooksByUserEmail?userEmail=${authState.accessToken?.claims.sub}&page=${currentPage -1}&size=5`;
