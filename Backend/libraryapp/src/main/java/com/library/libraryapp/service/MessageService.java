@@ -32,6 +32,6 @@ public class MessageService {
         message.get().setAdminEmail(userEmail);
         message.get().setResponse(adminQuestionRequest.getResponse());
         message.get().setClosed(true);
-        
+        messageRepository.save(message.get());
     }
 }
