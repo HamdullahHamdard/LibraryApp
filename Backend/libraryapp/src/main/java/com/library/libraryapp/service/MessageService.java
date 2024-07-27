@@ -29,5 +29,9 @@ public class MessageService {
         if(!message.isPresent()){
             throw new Exception("Message not found");
         }
+        message.get().setAdminEmail(userEmail);
+        message.get().setResponse(adminQuestionRequest.getResponse());
+        message.get().setClosed(true);
+        
     }
 }
