@@ -25,6 +25,6 @@ public class MessageService {
     }
 
     public void putMessage(AdminQuestionRequest adminQuestionRequest, String userEmail) throws Exception {
-        Optional<Message> message = messageRepository.findById(adminQuestionRequest.getId())
+        Optional<Message> message = messageRepository.findById(adminQuestionRequest.getId());
     }
 }
