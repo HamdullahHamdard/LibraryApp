@@ -64,7 +64,6 @@ export const AdminMessages = () => {
     }
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
     return (
         <div className='mt-3'>
             {messages.length > 0 ? 
