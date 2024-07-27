@@ -20,6 +20,7 @@ export const AdminMessages = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
+    // Use Effect to fetch data
     useEffect(() => {
         const fetchUserMessages = async () => {
             if (authState && authState.isAuthenticated) {
@@ -48,13 +49,11 @@ export const AdminMessages = () => {
         })
         window.scrollTo(0, 0);
     }, [authState, currentPage]);
-
     if (isLoadingMessages) {
         return (
             <SpinnerLoading/>
         );
     }
-
     if (httpError) {
         return (
             <div className='container m-5'>
@@ -62,8 +61,8 @@ export const AdminMessages = () => {
             </div>
         );
     }
-
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
     return (
         <div className='mt-3'>
             {messages.length > 0 ? 
