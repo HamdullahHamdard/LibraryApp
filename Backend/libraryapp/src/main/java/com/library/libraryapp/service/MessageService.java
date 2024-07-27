@@ -1,10 +1,13 @@
 package com.library.libraryapp.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.library.libraryapp.dao.MessageRepository;
 import com.library.libraryapp.entity.Message;
+import com.library.libraryapp.requestmodels.AdminQuestionRequest;
 
 @Service
 @Transactional
@@ -19,5 +22,9 @@ public class MessageService {
         Message message = new Message(messageRequest.getTitle(), messageRequest.getQuestion());
         message.setUserEmail(userEmail);
         messageRepository.save(message);
+    }
+
+    public void putMessage(AdminQuestionRequest adminQuestionRequest, String userEmail) throws Exception {
+        Optional<Message> message = messageRepository.findById(adminQuestionRequest.getId())
     }
 }
