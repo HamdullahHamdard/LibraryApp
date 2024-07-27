@@ -37,6 +37,7 @@ public class MessageController {
         if(admin == null || !admin.equals("admin")){
             throw new Exception("Adminastration page only");
         }
+        messageService.putMessage(adminQuestionRequest, userEmail);
 
     }
 }
