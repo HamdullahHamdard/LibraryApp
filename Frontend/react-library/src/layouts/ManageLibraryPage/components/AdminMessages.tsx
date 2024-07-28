@@ -4,6 +4,7 @@ import MessageModel from "../../../models/MessageModel";
 import { SpinnerLoading } from "../../Utils/SpinnerLoading";
 import { Pagination } from "../../Utils/Pagination";
 import { AdminMessage } from "./AdminMessage";
+import AdminMessageRequest from "../../../models/AdminMessageRequest";
 
 export const AdminMessages = () => {
     const { authState } = useOktaAuth();
@@ -19,6 +20,9 @@ export const AdminMessages = () => {
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+
+    // Recall use Effect
+    const [btnSubmit, setBtnSubmit] = useState(false);
 
     // Use Effect to fetch data
     useEffect(() => {
@@ -48,7 +52,7 @@ export const AdminMessages = () => {
             setHttpError(error.message);
         })
         window.scrollTo(0, 0);
-    }, [authState, currentPage]);
+    }, [authState, currentPage, btnSubmit]);
     if (isLoadingMessages) {
         return (
             <SpinnerLoading/>
@@ -62,6 +66,29 @@ export const AdminMessages = () => {
         );
     }
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+    async function submitResponseToQuestion(id: number, response: string){
+        const url = `http://localhost:8000/api/messages/secure/admin/message`;
+        if(authState && authState.isAuthenticated && id!== null && response !== ''){
+            const messageAdminRequest: AdminMessageRequest = new AdminMessageRequest(id, response);
+
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(messageAdminRequest),
+            }
+            const messageAdminRequestModelResponse = await fetch(url, requestOptions);
+            if(!messageAdminRequestModelResponse.ok){
+                return new Error('Some thing went wrong in sending response to a user question');
+            }
+            setBtnSubmit(!btnSubmit);
+
+        }
+    }
+
 
     return (
         <div className='mt-3'>
