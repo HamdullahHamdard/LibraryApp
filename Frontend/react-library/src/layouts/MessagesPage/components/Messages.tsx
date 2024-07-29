@@ -78,7 +78,7 @@ export const Messages = () => {
                                     <h5>Response: </h5>
                                     {message.response && message.adminEmail ? 
                                         <>
-                                            <h6>{message.adminEmail} (admin)</h6>
+                                            <h6>{message.adminEmail} "" (admin)</h6>
                                             <p>{message.response}</p>
                                         </>
                                         :
