@@ -1,11 +1,17 @@
 package com.library.libraryapp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.library.libraryapp.dao.BookRepository;
 import com.library.libraryapp.entity.Book;
 import com.library.libraryapp.requestmodels.AddBookRequest;
 
+
+
+@Service
+@Transactional
 public class AdminService {
     private BookRepository bookRepository;
 
