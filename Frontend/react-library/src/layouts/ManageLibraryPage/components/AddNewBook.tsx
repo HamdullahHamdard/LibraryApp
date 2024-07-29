@@ -23,7 +23,7 @@ export const AddNewBook = () => {
 
     async function base64ConversionForImages(e: any){
         if(e.target.files[0]){
-            // Do some thing here
+            getBase64(e.target.files[0]);
         }
     }
     function getBase64(file: any){
